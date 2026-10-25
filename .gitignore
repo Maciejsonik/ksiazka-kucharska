@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# Temporary and build artifacts
+przepisnik_rodzinny.zip
+dist*/
+*.tmp
+*.log
+
+# Raw unrotated scans (upright images are in images/)
+pngs/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/

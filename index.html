@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rodzinny Przepiśnik | Skarbnica Domowych Smaków</title>
+  <meta name="description" content="Kolekcja 110 tradycyjnych, autentycznych przepisów kulinarnych zebranych z rękopisów i rodzinnych zapisków.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  
+  <!-- PWA & Mobile Web App Meta -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#bd4a30">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Przepiśnik">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Sticky Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="#" class="brand-wrapper">
+        <div class="brand-logo-icon">📖</div>
+        <div class="brand-titles">
+          <span class="brand-title">Rodzinny Przepiśnik</span>
+          <span class="brand-subtitle">Tradycja • Smak • Wspomnienia</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <button id="install-pwa-btn" class="btn-header" style="display: none;" title="Zainstaluj aplikację na telefonie lub komputerze">
+          <span>📲</span> <span class="btn-text">Zainstaluj</span>
+        </button>
+        <button id="offline-sync-btn" class="btn-header" title="Zapisz wszystkie 154 zdjęcia do pamięci podręcznej offline">
+          <span>💾</span> <span class="btn-text">Offline</span>
+        </button>
+        <button id="fav-filter-btn" class="btn-header" title="Pokaż tylko ulubione przepisy">
+          <span>❤️</span> <span class="btn-text">Ulubione</span>
+        </button>
+        <button id="shopping-list-btn" class="btn-header" title="Otwórz listę zakupów">
+          <span>🛒</span> <span class="btn-text">Zakupy</span>
+        </button>
+        <a id="download-pdf-btn" href="ksiazka_kucharska.pdf" download="ksiazka_kucharska.pdf" target="_blank" class="btn-header btn-header-primary" title="Pobierz kompletną książkę kucharską w PDF">
+          <span>📥</span> <span class="btn-text">Pobierz PDF</span>
+        </a>
+        <button id="theme-toggle-btn" class="btn-header btn-icon-only" title="Przełącz motyw ciemny/jasny">
+          🌙
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="hero-banner">
+    <div class="hero-content">
+      <div class="hero-ornament">❦ ❧</div>
+      <h1 class="hero-title">Skarbnica Domowych Smaków</h1>
+      <p class="hero-desc">
+        Wyjątkowy zbiór 144 sprawdzonych, pieczołowicie odczytanych przepisów z rodzinnych notatek,
+        zeszytów babcinych i odręcznych kart. Każde danie zawiera oryginalny rękopis, dokładne proporcje,
+        praktyczne wskazówki oraz przelicznik porcji.
+      </p>
+
+      <div class="hero-stats-row">
+        <div class="hero-stat-item">
+          <span class="hero-stat-number">144</span> przepisy domowe
+        </div>
+        <div class="hero-stat-item">
+          <span class="hero-stat-number">154</span> oryginalne rękopisy
+        </div>
+        <div class="hero-stat-item">
+          <span class="hero-stat-number">7</span> tradycyjnych kategorii
+        </div>
+        <div class="hero-stat-item">
+          <span class="hero-stat-number">100%</span> przetestowane smaki
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Area -->
+  <main class="main-wrapper">
+    <!-- Controls: Search & Category Tabs -->
+    <div class="controls-section">
+      <!-- Search Input Bar -->
+      <div class="search-bar-row">
+        <div class="search-input-wrapper">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="search-input" 
+            class="search-input" 
+            placeholder="Szukaj po nazwie dania, składniku (np. twaróg, śliwki, łopatka) lub technice..."
+            autocomplete="off"
+          >
+          <button id="clear-search-btn" class="clear-search-btn" title="Wyczyść wyszukiwanie">✕</button>
+        </div>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="category-tabs-wrapper">
+        <div id="category-tabs" class="category-tabs">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Secondary Filter Row -->
+      <div class="filter-summary-row">
+        <div>
+          Znaleziono: <strong id="recipes-count" class="active-filter-indicator">110 przepisów</strong>
+        </div>
+        <div class="sort-select-wrapper">
+          <label for="sort-select">Sortowanie:</label>
+          <select id="sort-select" class="sort-select">
+            <option value="title-asc">Alfabetycznie (A do Z)</option>
+            <option value="title-desc">Alfabetycznie (Z do A)</option>
+            <option value="time-asc">Czas przygotowania (od najkrótszego)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recipes Grid -->
+    <section id="recipes-grid" class="recipes-grid" aria-label="Lista przepisów">
+      <!-- Recipe cards populated dynamically by JS -->
+    </section>
+  </main>
+
+  <!-- Recipe Detail Modal -->
+  <div id="recipe-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div id="recipe-modal-dialog" class="modal-dialog">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="modal-header-actions">
+          <button id="modal-fav-btn" class="btn-header" title="Dodaj do ulubionych">
+            🤍
+          </button>
+          <button id="modal-share-btn" class="btn-header" title="Udostępnij ten przepis">
+            📤 Udostępnij
+          </button>
+          <button id="modal-kitchen-btn" class="btn-header" title="Włącz tryb gotowania na pełnym ekranie">
+            👨‍🍳 Tryb gotowania
+          </button>
+          <button id="modal-add-shopping-btn" class="btn-header" title="Dodaj składniki do listy zakupów">
+            ➕ Lista zakupów
+          </button>
+          <button id="modal-print-btn" class="btn-header" title="Drukuj przepis">
+            🖨️ Drukuj
+          </button>
+        </div>
+        <button id="modal-close-btn" class="modal-close-btn" title="Zamknij (Esc)">✕</button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <div>
+          <h2 id="modal-title" class="modal-recipe-title">Nazwa przepisu</h2>
+          <div id="modal-badges" class="modal-recipe-badges"></div>
+        </div>
+
+        <!-- Portion Scaler Box -->
+        <div id="scaler-box" class="scaler-box"></div>
+
+        <!-- Ingredients List with Checkboxes -->
+        <div class="ingredients-section">
+          <h3 class="section-heading">
+            <span>🥗 Składniki</span>
+            <small style="font-size: 0.75rem; font-weight: normal; color: var(--text-dim);">(odznaczaj przygotowane produkty)</small>
+          </h3>
+          <div id="ingredients-list" class="ingredients-list"></div>
+        </div>
+
+        <!-- Instructions Steps with Timers -->
+        <div class="instructions-section">
+          <h3 class="section-heading">👩‍🍳 Sposób przygotowania krok po kroku</h3>
+          <div id="instructions-list" class="instructions-steps"></div>
+        </div>
+
+        <!-- Family Tips & Notes -->
+        <div id="family-tips-box" class="family-tips-box">
+          <h4 class="tips-title">💡 Wskazówki Babci i Sekrety Smaku</h4>
+          <div id="family-tips-text" class="tips-text"></div>
+        </div>
+
+        <!-- Original Handwritten Manuscript Photos -->
+        <div class="manuscript-section">
+          <h3 class="section-heading">📜 Oryginalny rękopis z rodzinnego archiwum</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+            Kliknij w poniższe zdjęcie, aby otworzyć powiększenie w wysokiej rozdzielczości i zobaczyć autentyczną odręczną notatkę:
+          </p>
+          <div id="manuscript-gallery" class="manuscript-gallery"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- High-Res Manuscript Lightbox -->
+  <div id="lightbox-backdrop" class="lightbox-backdrop" role="dialog" aria-modal="true">
+    <div class="lightbox-dialog">
+      <button id="lightbox-close-btn" class="lightbox-close-btn" title="Zamknij (Esc)">✕</button>
+      <img id="lightbox-img" class="lightbox-img" src="" alt="Powiększenie rękopisu">
+    </div>
+  </div>
+
+  <!-- Kitchen Focus Mode (Fullscreen Step-by-Step) -->
+  <div id="kitchen-overlay" class="kitchen-mode-overlay" role="dialog" aria-modal="true">
+    <div class="kitchen-header">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <h2 id="kitchen-title" class="kitchen-title">Tryb Gotowania</h2>
+        <span id="kitchen-wake-badge" style="font-size: 0.75rem; background: rgba(255,255,255,0.2); padding: 0.2rem 0.6rem; border-radius: 12px; color: #ffd700;" title="Ekran pozostanie włączony podczas gotowania">💡 Ekran aktywny</span>
+      </div>
+      <button id="kitchen-close-btn" class="btn-kitchen" title="Wyjdź z trybu gotowania">Wyjdź ✕</button>
+    </div>
+    <div class="kitchen-step-display">
+      <div id="kitchen-step-badge" class="kitchen-step-badge">Krok 1 z 5</div>
+      <p id="kitchen-step-text" class="kitchen-step-text">Treść kroku...</p>
+      <div class="kitchen-controls">
+        <button id="kitchen-prev-btn" class="btn-kitchen">← Poprzedni</button>
+        <button id="kitchen-next-btn" class="btn-kitchen btn-kitchen-primary">Następny krok →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shopping List Modal -->
+  <div id="shopping-modal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-dialog" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 style="font-family: var(--font-serif); font-size: 1.4rem;">🛒 Twoja Lista Zakupów</h3>
+        <button id="shopping-close-btn" class="modal-close-btn" title="Zamknij">✕</button>
+      </div>
+      <div class="modal-body" style="padding: 1.5rem;">
+        <div id="shopping-items-container" class="shopping-list-items"></div>
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1rem;">
+          <button id="clear-shopping-btn" class="btn-header" style="color: #e53e3e;">Wyczyść listę</button>
+          <button id="copy-shopping-btn" class="btn-header btn-header-primary">Kopiuj do schowka</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Offline Cache Manager Modal -->
+  <div id="offline-modal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-dialog" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3 style="font-family: var(--font-serif); font-size: 1.35rem;">💾 Pamięć Podręczna Offline</h3>
+        <button id="offline-close-btn" class="modal-close-btn" title="Zamknij">✕</button>
+      </div>
+      <div class="modal-body" style="padding: 1.5rem;">
+        <p style="font-size: 0.95rem; margin-bottom: 1rem; color: var(--text-main); line-height: 1.5;">
+          Możesz zapisać w pamięci przeglądarki wszystkie 154 oryginalne zdjęcia rękopisów (ok. 98 MB). 
+          Dzięki temu aplikacja będzie działać w 100% sprawnie w kuchni nawet przy braku połączenia z Internetem czy domowym Wi-Fi.
+        </p>
+
+        <div id="offline-status-box" style="background: var(--bg-warm-tint); padding: 1.1rem; border-radius: var(--radius-md); margin-bottom: 1.25rem; border: 1px solid var(--border-light);">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem;">
+            <span id="offline-status-label" style="font-weight: 600;">Status pamięci:</span>
+            <strong id="offline-count-label" style="color: var(--accent-primary);">Sprawdzanie...</strong>
+          </div>
+          <div style="background: var(--border-light); height: 10px; border-radius: 5px; overflow: hidden; margin: 0.5rem 0;">
+            <div id="offline-progress-bar" style="background: var(--accent-primary); width: 0%; height: 100%; transition: width 0.2s ease;"></div>
+          </div>
+          <div id="offline-detail-text" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">
+            Gotowy do pobierania.
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+          <button id="start-cache-btn" class="btn-header btn-header-primary">
+            <span>💾</span> Pobierz wszystkie zdjęcia (98 MB)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Active Cooking Timer Float Widget -->
+  <div id="timer-widget" class="timer-widget">
+    <div style="font-size: 1.5rem;">⏱️</div>
+    <div>
+      <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted);">Minutnik</div>
+      <div id="timer-clock" class="timer-clock">00:00</div>
+    </div>
+    <button id="timer-toggle-btn" class="btn-header" style="padding: 0.4rem 0.75rem;">Pauza</button>
+    <button id="timer-reset-btn" class="btn-header" style="padding: 0.4rem 0.75rem;">Reset</button>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-ornament">❦</div>
+    <p style="font-weight: 600; margin-bottom: 0.25rem;">Rodzinny Przepiśnik • Domowe Dziedzictwo Kulinarne</p>
+    <p style="font-size: 0.8rem; color: var(--text-dim);">
+      Przygotowano z miłością do tradycyjnej kuchni, domowego ciepła i autentycznych rękopisów.
+    </p>
+  </footer>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
