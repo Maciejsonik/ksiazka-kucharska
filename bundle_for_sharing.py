@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 bundle_for_sharing.py
 Pakuje aplikację do samodzielnego archiwum ZIP (przepisnik_rodzinny.zip),

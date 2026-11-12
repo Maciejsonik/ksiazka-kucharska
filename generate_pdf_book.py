@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 generate_pdf_book.py
 Generuje kompletną, elegancką książkę kucharską w formacie PDF (A4)
@@ -8,6 +7,7 @@ na podstawie 110 przepisów z recipes.json i zdjęć z images_upright/.
 import json
 import os
 import subprocess
+
 
 def generate_html_book():
     with open("recipes.json", "r", encoding="utf-8") as f:
@@ -33,8 +33,8 @@ def generate_html_book():
             recipes_by_cat.setdefault("Dania główne", []).append(r)
 
     # Sort recipes alphabetically within categories
-    for cat in recipes_by_cat:
-        recipes_by_cat[cat].sort(key=lambda x: x["title"])
+    for cat_recipes in recipes_by_cat.values():
+        cat_recipes.sort(key=lambda x: x["title"])
 
     abs_img_dir = os.path.abspath("images")
 
@@ -671,7 +671,7 @@ def generate_html_book():
         html_abs_url
     ]
 
-    res = subprocess.run(cmd, capture_output=True, text=True)
+    res = subprocess.run(cmd, check=False, capture_output=True, text=True)
 
     # Clean up temporary HTML file
     if os.path.exists(temp_html):
